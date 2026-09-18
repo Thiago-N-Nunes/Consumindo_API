@@ -11,8 +11,8 @@ def hello():
     return {'Olá':'Mundo'} #Retorna dentro do Json Olá Mundo
 
 #Função de retornar restaurante
-@app.get('/api/restaurantes/')
-def pegar_restaurante(restaurante:str = Query(None)): #Faz com que funcione até se o caminho depois da barra tiver vazio funcione
+@app.get('/api/restaurantes/')#Pra usar a query, preciso colocar o ? após a barra pra iniciar a pesquisa
+def pegar_restaurante(restaurante:str = Query(None)): #Faz com que funcione até se o caminho depois da barra tiver vazio funcione, e permite fazer pesquisas
     '''
     Endpoint que recebe todos os cardapios dos restaurante
     '''
@@ -21,10 +21,10 @@ def pegar_restaurante(restaurante:str = Query(None)): #Faz com que funcione até
 
     if response.status_code == 200:
         dados_json = response.json()#Aqui está transformando a resposta da API em Json
-        if restaurante is None:
-            return {'dados' : dados_json}
+        if restaurante is None:#Se a busca de restaurante tiver vazia
+            return {'dados' : dados_json}#Vai listar os restaurantes e os dados deles
         
-        dados_restaurante = []#Aqui vai receber todos os dados do restaurante
+        dados_restaurante = []#Aqui vai receber todos os dados do restaurante[{item: '', preco:'', descrição : ''}]
         for item in dados_json: #Pra cada item dentro da API
             if item['Company'] == restaurante: #Se o restaurante passado for igual ao um da lista de restaurantes
                 dados_restaurante.append({
